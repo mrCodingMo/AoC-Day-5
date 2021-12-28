@@ -17,7 +17,6 @@ for _ in 0 ... playgroundSize {
 }
 
 var overlapingCount = 0
-let overlapingSpecification = 2
 
 for cor in coordinates {
     DrawLine(coordinate: cor, OnlyWhenIdentical: true)
@@ -41,8 +40,6 @@ func DrawLine(coordinate : coordinate, OnlyWhenIdentical: Bool) {
         }
     }
 }
-
-
 
 func printPlayground() {
 
@@ -103,5 +100,4 @@ struct coordinate {
     func yIsIdentical() -> Bool{
         return yFrom == yTo
     }
-    
 }
