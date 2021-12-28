@@ -14,39 +14,50 @@ let coordinates = data.map {coordinate(rawvalue: String($0))}
 
 var playGround = [[Int]]()
 
-for _ in 0 ... data.count - 1 {
+for _ in 0 ... 999 {
     
-    var field = [Int](repeating: 0, count: 10)
+    var field = [Int](repeating: 0, count: 999)
     playGround.append(field)
 }
 
-printPlayground()
-
+var overlapingCount = 0
+let overlapingSpecification = 2
 for cor in coordinates {
     DrawLine(coordinate: cor, OnlyWhenIdentical: true)
 }
 
 printPlayground()
+print(overlapingCount)
 
 func DrawLine(coordinate : coordinate, OnlyWhenIdentical: Bool) {
     
     if OnlyWhenIdentical && !(coordinate.xIsIdentical() || coordinate.yIsIdentical()) { return }
     
-    for x in coordinate.xFrom ... coordinate.xTo - 1 {
-        for y in coordinate.yFrom ... coordinate.yTo - 1 {
-            playGround[x][y] += 1
-            printPlayground()
+    for y in coordinate.yFrom ... coordinate.yTo {
+        
+        for x in coordinate.xFrom ... coordinate.xTo {
+     
+            playGround[y][x] += 1
+            if (playGround[y][x] >= overlapingSpecification) {
+                overlapingCount += 1
+            }
         }
-                
     }
 }
 
+
+
 func printPlayground() {
-    
+    print("##############")
     for row in playGround {
         var line = ""
         for clm in row {
-            line.append(String(clm))
+            if (clm == 0) {
+                line.append(".")
+            }else {
+                line.append(String(clm))
+            }
+            
         }
         print(line)
     }
@@ -69,6 +80,18 @@ struct coordinate {
         
         yFrom = Int(firstPart.split(separator: Character(","))[1]) ?? 0
         yTo = Int(secondPart.split(separator: Character(","))[1]) ?? 0
+        
+        if (xFrom > xTo){
+            let x = xFrom
+            xFrom = xTo
+            xTo = x
+        }
+        
+        if (yFrom > yTo){
+            let y = yFrom
+            yFrom = yTo
+            yTo = y
+        }
         
     }
     
